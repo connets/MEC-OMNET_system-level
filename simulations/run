@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/mec_simple -n .:../src $*
+# for shared lib, use: opp_run -l ../src/mec_simple -n .:../src $*
