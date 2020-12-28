@@ -16,8 +16,9 @@
 //#include "inet/networklayer/common/L3AddressResolver.h"
 //#include "inet/transportlayer/contract/tcp/TcpCommand_m.h"
 
-#include "../control_plane/MecControlMessages_m.h"
 #include <vector>
+
+#include "../control_plane/messages/MecControlMessages_m.h"
 
 using namespace omnetpp;
 using namespace std;

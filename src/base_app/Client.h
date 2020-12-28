@@ -2,10 +2,10 @@
 #include <omnetpp/csimplemodule.h>
 #include <omnetpp/regmacros.h>
 
+#include "../control_plane/messages/MecControlMessages_m.h"
 #include "inet/common/InitStages.h"
 #include "inet/transportlayer/contract/tcp/TcpSocket.h"
 
-#include "../control_plane/MecControlMessages_m.h"
 
 using namespace omnetpp;
 

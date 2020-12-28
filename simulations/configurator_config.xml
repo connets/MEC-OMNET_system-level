@@ -1,0 +1,32 @@
+<config>
+<interface hosts='user' address='10.x.x.x' netmask='255.x.x.x'/> \
+<interface hosts='mecHost1.MecPlatform' address='11.0.0.1' netmask='255.x.x.x'/> \
+<interface hosts='mecHost2.MecPlatform' address='11.0.0.5' netmask='255.x.x.x'/> \
+<interface hosts='mecApp*.vm' address='12.x.x.x' netmask='255.x.x.x'/> \
+<interface hosts='mecOrchestrator' address='15.x.x.x' netmask='255.x.x.x'/> \
+
+<interface hosts='mecHost*.*' address='13.x.x.x' netmask='255.x.x.x'/> \
+<interface hosts='dummy' address='14.x.x.x' netmask='255.x.x.x'/> \
+<interface hosts='*' address='10.x.x.x' netmask='255.x.x.x'/> \
+
+<!-- DUMMY -->
+
+<route hosts='router_mecHost1' destination='14.0.0.0' netmask='255.0.0.0' gateway='*' interface='ppp2' metric='0'/> \
+
+<!-- CONTROL -->
+
+<route hosts='router_mecHost1' destination='11.0.0.1' netmask='255.255.255.255' gateway='*' interface='ppp1' metric='0'/> \
+<route hosts='router_mecHost2' destination='11.0.0.5' netmask='255.255.255.255' gateway='*' interface='ppp1' metric='0'/> \
+<route hosts='router_mecHost*' destination='11.0.0.0' netmask='255.0.0.0' gateway='*' interface='ppp0' metric='0'/> \
+<route hosts='router_ext' destination='15.0.0.0' netmask='255.0.0.0' gateway='*' interface='ppp2' metric='0'/> \
+
+<!-- MECAPP -->
+
+<route hosts='router_mecHost1' destination='12.0.0.0' netmask='255.0.0.0' gateway='*' interface='ppp1' metric='0'/> \
+<route hosts='router_mecHost2' destination='12.0.0.0' netmask='255.0.0.0' gateway='*' interface='ppp1' metric='0'/> \
+
+<route hosts='mecHost*.vrouter' destination='12.0.0.0' netmask='255.0.0.0' gateway='*' interface='eth0' metric='0'/> \
+
+<!-- USER -->
+
+</config>

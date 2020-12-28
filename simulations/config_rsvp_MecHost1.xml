@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sessions>
+	<session>
+		<endpoint>user</endpoint>
+		<tunnel_id>1</tunnel_id>
+		
+		<paths>
+			<path>
+				<lspid>200</lspid>
+				<route>
+					<lnode>router_ext%routerId</lnode>
+				</route>
+
+				<permanent>true</permanent>
+				<color>200</color>
+			</path>
+		</paths>
+	</session>
+	<session>
+		<endpoint>mecHost2.MecPlatform</endpoint>
+		<tunnel_id>3</tunnel_id>
+		<paths>
+			<path>
+				<lspid>402</lspid>
+				<route>
+					<lnode>router_mecHost2%routerId</lnode>
+				</route>
+				<permanent>true</permanent>
+				<color>302</color>
+			</path>
+		</paths>
+	</session>
+</sessions>

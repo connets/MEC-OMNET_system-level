@@ -1,12 +1,12 @@
 #
-# OMNeT++/OMNEST Makefile for MEC
+# OMNeT++/OMNEST Makefile for MEC-OMNET_system-level
 #
 # This file was generated with the command:
 #  opp_makemake -f --deep -KINET_PROJ=../../inet -DINET_IMPORT -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\)
 #
 
 # Name of target to be created (-o option)
-TARGET = MEC$(D)$(EXE_SUFFIX)
+TARGET = MEC-OMNET_system-level$(D)$(EXE_SUFFIX)
 TARGET_DIR = .
 
 # User interface (uncomment one) (-u option)
@@ -31,18 +31,26 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
 OBJS = \
-    $O/MecApp.o \
-    $O/MecControlApp.o \
-    $O/MecOrchestratorApp.o \
-    $O/MecPlatformApp.o \
-    $O/MecUser.o \
     $O/base_app/Client.o \
     $O/base_app/Server.o \
-    $O/control_plane/MecControlMessages_m.o
+    $O/hostLevel/Arp_public.o \
+    $O/hostLevel/ConfiguratorMecMpls.o \
+    $O/hostLevel/MecAppDispatcher.o \
+    $O/hostLevel/MecRsvpClassifier.o \
+    $O/hostLevel/Myrsvp.o \
+    $O/hostLevel/Ted_Mec.o \
+    $O/systemLevel/MecApp.o \
+    $O/systemLevel/MecControlApp.o \
+    $O/systemLevel/MecOrchestratorApp.o \
+    $O/systemLevel/MecPlatformApp.o \
+    $O/systemLevel/MecUser.o \
+    $O/control_plane/messages/MecControlMessages_m.o \
+    $O/hostLevel/MadMessage_m.o
 
 # Message files
 MSGFILES = \
-    control_plane/MecControlMessages.msg
+    control_plane/messages/MecControlMessages.msg \
+    hostLevel/MadMessage.msg
 
 # SM files
 SMFILES =
