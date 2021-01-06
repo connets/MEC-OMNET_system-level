@@ -13,6 +13,8 @@
 
 Define_Module(MecPlatformApp);
 
+using namespace xmlutils;
+
 void MecPlatformApp::initialize (int numstage) {
 
 //    if (numstage == inet::INITSTAGE_APPLICATION_LAYER) {
@@ -30,6 +32,9 @@ void MecPlatformApp::initialize (int numstage) {
     if (numstage == inet::INITSTAGE_LOCAL) {
         sendUpdate = new cMessage("Send event");
         sendResources = new cMessage("Send resources");
+        string sHostName(hostName);
+        string myName = sHostName + ".MecPlatform";
+        mecHostLspid = readElementFromXml(par("fecFile"),myName,"lspid");
     }
     if (numstage == inet::INITSTAGE_APPLICATION_LAYER) {
         connectClientSocket(par("orchestratorAddress"), par("orchestratorPort"));
@@ -44,7 +49,7 @@ void MecPlatformApp::initialize (int numstage) {
 
 
 
-// da sistemare il modo in cui accedo alla clientSocketMap in base alla chiave
+// da sistemare il modo in cui accedoXMLUtils alla clientSocketMap in base alla chiave
 void MecPlatformApp::processSelfMessage(cMessage *msg){
 
     if(msg == sendResources){
@@ -90,7 +95,7 @@ void MecPlatformApp::processMecStartMecAppMessage(inet::Ptr<const MecStartMecApp
     EV << "MEC PLATFORM has received the mec start mecapp message" << endl;
     auto appNamec = message->getMecApplication().getAppName();
     string appName(appNamec);
-    connectApp(appName,false);
+    connectApp(appName);
     auto answerMessage = createMecControlMessage<MecAppStartedMessage>();
     answerMessage->setServiceName(message->getServiceName());
     answerMessage->setAppName(appNamec);
@@ -118,6 +123,15 @@ void MecPlatformApp::processMecAppTransfertMessage(inet::Ptr<const MecAppTransfe
     EV << "Migrazione completata" << endl;
 }
 
+int MecPlatformApp::readElementFromXml(const cXMLElement *fec,string dest , string element){
+    cXMLElementList list = fec->getChildrenByTagName("fecentry");
+    for (auto & elem : list){
+        string destination = getParameterStrValue(elem, "destination");
+        if (destination == dest ){
+            return getParameterIntValue(elem,element.c_str());
+        }
+    }
+}
 
 /**void MecPlatformApp::spawnAndConnectApp(string appName){
     const char * c0 = appName.c_str();
@@ -279,9 +293,12 @@ void MecPlatformApp::route_label(string appName,bool migration){
         MecRsvpClassifier *userClassifier = check_and_cast<MecRsvpClassifier*>(getModuleByPath(router_dest.c_str()));
 
         //    userClassifier->add_in_table(3, 3, 300, "user");
+
+        int id = readElementFromXml(par("fecFile"), appName + ".vm", "id");
+        int tunnel_id = readElementFromXml(par("fecFile"), appName + ".vm", "tunnel_id");
         const char * dest = (appName + ".vm").c_str();
     //    userClassifier->remove_from_table(4);
-        userClassifier->add_in_table(4, 4, 402, dest);
+        userClassifier->add_in_table(id,tunnel_id, mecHostLspid, dest);
         EV<<"Aggiunto bind con corretta label switch path verso " << dest << endl;
     }
     // AGGIUNGO COSE CHE MI TOGLIE QUESTO PROCEDIMENTO copia incolla dalla spawn

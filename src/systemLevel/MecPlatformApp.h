@@ -1,7 +1,9 @@
 #include "../systemLevel/MecControlApp.h"
+#include "inet/common/XMLUtils.h"
 
 using namespace omnetpp;
 using namespace std;
+using namespace inet;
 
 class MecPlatformApp: public MecControlApp{
 
@@ -13,8 +15,9 @@ private:
     int mecHostLspid;
     //void spawnAndConnectApp(string appName);
     void disconnectApp(string appName);
-    void connectApp(string appName,bool migration);
+    void connectApp(string appName,bool migration=false);
     void route_label(string appName,bool migration);
+    int readElementFromXml(const cXMLElement *fec,string dest,string element);
 protected:
 
     virtual void initialize(int numstage) override;
@@ -25,6 +28,7 @@ protected:
     virtual void processMecStartMecAppMessage(inet::Ptr<const MecStartMecAppMessage> message) override;
     virtual void processMecAppTransfertMessage(inet::Ptr<const MecAppTransfertMessage> message) override;
     virtual void processMecAppMigrationMessage(inet::Ptr<const MecAppMigrationMessage> message) override;
+
 public:
 
 };

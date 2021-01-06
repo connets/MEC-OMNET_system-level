@@ -11,6 +11,7 @@ simple MecPlatformApp like IMecControlApp
         string orchestratorAddress = default("mecOrchestrator");
         int orchestratorPort = default(1000);
         double startTime @unit(s) = default(10s);
+        xml fecFile;
  	
     gates:
         input socketIn @labels(Server/up);
