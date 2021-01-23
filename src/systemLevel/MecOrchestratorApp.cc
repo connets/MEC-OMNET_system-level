@@ -53,9 +53,8 @@ void MecOrchestratorApp::processMecRequestServiceMessage(inet::Ptr<const MecRequ
     for(int i=0;i<size;i++){
         actualApp++;
         auto app = message->getMecApplications(i);
-        string sAppName(app.getAppName());
-        auto appName = (sAppName + "[" + to_string(actualApp-1)+"]").c_str();
-        app.setAppName(appName);
+        auto appName = app.getAppName();
+        auto containerName = ("mecApp[" + to_string(actualApp-1)+"]").c_str(); //containername AppName diventa nome dell applicazione
         auto res = app.getRequiredResources();
         auto qos = app.getQosRequirements();
 
@@ -71,18 +70,19 @@ void MecOrchestratorApp::processMecRequestServiceMessage(inet::Ptr<const MecRequ
            << "     Bandwidth: " << qos.getBandwidth()
            << "     Processing Time: " << qos.getProcessingTime()
            << endl;
-        handleApplication(app,service);
+        handleApplication(app,service,containerName);
     }
 }
 
 // TODO: how does the orchestrator choose the mec host?
-void MecOrchestratorApp::handleApplication(MecAppDescription application, const char *serviceName){
+void MecOrchestratorApp::handleApplication(MecAppDescription application, const char *serviceName,const char *containerName){
 
     if(!MECHosts.empty()){
 
         auto startMecAppMessage = createMecControlMessage<MecStartMecAppMessage>();
         startMecAppMessage->setServiceName(serviceName);
         startMecAppMessage->setMecApplication(application);
+        startMecAppMessage->setContainerName(containerName);
 
         sendMecControlMessage("mecHost1", startMecAppMessage); // to fix
 

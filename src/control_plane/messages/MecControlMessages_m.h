@@ -35,8 +35,38 @@ class MecAppMigrationMessage;
 
 #include "inet/common/packet/chunk/Chunk_m.h" // import inet.common.packet.chunk.Chunk
 
+// cplusplus {{
+        #include <map>
+        #include <omnetpp.h>
+        //        //typedef std::map<std::string, std::string> stringMap;  //secondo parametro template c++ 
+        ////        class AnyBase
+        ////        {
+        ////                public:
+        ////                virtual ~AnyBase() = 0;
+        ////                virtual getData
+        ////        };
+        ////        inline AnyBase::~AnyBase() {}
+        //        
+        //        template<class T>
+        //        class Any //: public AnyBase
+        //        {
+        //                public:
+        //                typedef T Type;
+        //                explicit Any(const Type& data) : data(data) {}
+        //                Any() {}
+        //                Type data;
+        //        };
+        //        
+        //        
+        //        template<typename T>
+        
+        typedef std::map<std::string, omnetpp::cParImpl *> parameterMap;
+        
+        //std::map<std::string, std::unique_ptr<AnyBase>> anymap;
+// }}
+
 /**
- * Enum generated from <tt>control_plane/messages/MecControlMessages.msg:19</tt> by nedtool.
+ * Enum generated from <tt>control_plane/messages/MecControlMessages.msg:50</tt> by nedtool.
  * <pre>
  * enum ControlMessageType
  * {
@@ -65,7 +95,7 @@ enum ControlMessageType {
 };
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:31</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:70</tt> by nedtool.
  * <pre>
  * class Resources
  * {
@@ -111,7 +141,7 @@ class Resources
 };
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:38</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:77</tt> by nedtool.
  * <pre>
  * class QoSRequirements
  * {
@@ -153,13 +183,14 @@ class QoSRequirements
 };
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:44</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:83</tt> by nedtool.
  * <pre>
  * class MecAppDescription
  * {
  *     string appName;
  *     Resources requiredResources;
  *     QoSRequirements qosRequirements;
+ *     parameterMap parameters;
  * }
  * </pre>
  */
@@ -169,6 +200,7 @@ class MecAppDescription
     omnetpp::opp_string appName;
     Resources requiredResources;
     QoSRequirements qosRequirements;
+    parameterMap parameters;
 
   private:
     void copy(const MecAppDescription& other);
@@ -194,10 +226,13 @@ class MecAppDescription
     virtual const QoSRequirements& getQosRequirements() const;
     virtual QoSRequirements& getQosRequirementsForUpdate() { return const_cast<QoSRequirements&>(const_cast<MecAppDescription*>(this)->getQosRequirements());}
     virtual void setQosRequirements(const QoSRequirements& qosRequirements);
+    virtual const parameterMap& getParameters() const;
+    virtual parameterMap& getParametersForUpdate() { return const_cast<parameterMap&>(const_cast<MecAppDescription*>(this)->getParameters());}
+    virtual void setParameters(const parameterMap& parameters);
 };
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:50</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:90</tt> by nedtool.
  * <pre>
  * class MecControlMessage extends inet::FieldsChunk
  * {
@@ -247,7 +282,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecControlMessage& ob
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecControlMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:57</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:97</tt> by nedtool.
  * <pre>
  * class MecUpdateMessage extends MecControlMessage
  * {
@@ -299,7 +334,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecUpdateMessage& obj
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecUpdateMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:66</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:106</tt> by nedtool.
  * <pre>
  * class MecHelloMessage extends MecControlMessage
  * {
@@ -340,7 +375,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecHelloMessage& obj)
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecHelloMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:72</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:112</tt> by nedtool.
  * <pre>
  * class MecWelcomeMessage extends MecControlMessage
  * {
@@ -380,7 +415,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecWelcomeMessage& ob
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecWelcomeMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:79</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:119</tt> by nedtool.
  * <pre>
  * // user -> orchestrator
  * class MecRequestServiceMessage extends MecControlMessage
@@ -432,7 +467,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecRequestServiceMess
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecRequestServiceMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:87</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:127</tt> by nedtool.
  * <pre>
  * // orchestrator -> platform
  * class MecStartMecAppMessage extends MecControlMessage
@@ -441,6 +476,7 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecRequestServiceMessage&
  *     ctlMsgType = MEC_START_MEC_APP_MESSAGE;
  *     string serviceName;
  *     MecAppDescription mecApplication;
+ *     string containerName;
  * }
  * </pre>
  */
@@ -449,6 +485,7 @@ class MecStartMecAppMessage : public ::MecControlMessage
   protected:
     omnetpp::opp_string serviceName;
     MecAppDescription mecApplication;
+    omnetpp::opp_string containerName;
 
   private:
     void copy(const MecStartMecAppMessage& other);
@@ -472,13 +509,15 @@ class MecStartMecAppMessage : public ::MecControlMessage
     virtual const MecAppDescription& getMecApplication() const;
     virtual MecAppDescription& getMecApplicationForUpdate() { handleChange();return const_cast<MecAppDescription&>(const_cast<MecStartMecAppMessage*>(this)->getMecApplication());}
     virtual void setMecApplication(const MecAppDescription& mecApplication);
+    virtual const char * getContainerName() const;
+    virtual void setContainerName(const char * containerName);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecStartMecAppMessage& obj) {obj.parsimPack(b);}
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecStartMecAppMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:95</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:136</tt> by nedtool.
  * <pre>
  * // platform -> orchestrator
  * class MecAppStartedMessage extends MecControlMessage
@@ -523,7 +562,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecAppStartedMessage&
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecAppStartedMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:103</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:144</tt> by nedtool.
  * <pre>
  * // orchestrator -> user 	probably to change something, for example insert the qos and resources parameters
  * class MecServiceStartedMessage extends MecControlMessage
@@ -564,7 +603,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecServiceStartedMess
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecServiceStartedMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:109</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:150</tt> by nedtool.
  * <pre>
  * //platform->platform
  * class MecAppTransfertMessage extends MecControlMessage
@@ -605,7 +644,7 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecAppTransfertMessag
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecAppTransfertMessage& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>control_plane/messages/MecControlMessages.msg:115</tt> by nedtool.
+ * Class generated from <tt>control_plane/messages/MecControlMessages.msg:156</tt> by nedtool.
  * <pre>
  * //orchestrator->platform
  * class MecAppMigrationMessage extends MecControlMessage

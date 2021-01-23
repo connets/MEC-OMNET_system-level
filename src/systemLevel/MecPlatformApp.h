@@ -13,11 +13,14 @@ private:
     cMessage *sendResources;
     int updateRate;
     int mecHostLspid;
+    int numGate = 3; //passare alla platform a cui migri e ( forse mappa)
     //void spawnAndConnectApp(string appName);
+    void createAppModule(string appName,string containerName,map<std::string, omnetpp::cParImpl *> parameters);
     void disconnectApp(string appName);
     void connectApp(string appName,bool migration=false);
     void route_label(string appName,bool migration);
     int readElementFromXml(const cXMLElement *fec,string dest,string element);
+    void processAndAssignParameter(cPar &moduleParameter,cParImpl * parameterValue);
 protected:
 
     virtual void initialize(int numstage) override;

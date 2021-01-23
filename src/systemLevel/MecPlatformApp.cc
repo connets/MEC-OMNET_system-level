@@ -17,16 +17,16 @@ using namespace xmlutils;
 
 void MecPlatformApp::initialize (int numstage) {
 
-//    if (numstage == inet::INITSTAGE_APPLICATION_LAYER) {
-//        hostName = (getParentModule()->getParentModule()->getName());
-//        // setup serverSocket
-//        int listeningPort = par("listeningPort");
-//        serverSocket.setOutputGate(gate("socketOut"));
-//        serverSocket.bind(inet::L3AddressResolver().resolve((this->getParentModule()->getFullPath()).c_str()), listeningPort);
-//        serverSocket.setCallback(this);
-//        serverSocket.listen();
-//    }
-//    EV <<  "MEC PLATFORM: " << internalGetModulePathForResolve()<< endl;
+    //    if (numstage == inet::INITSTAGE_APPLICATION_LAYER) {
+    //        hostName = (getParentModule()->getParentModule()->getName());
+    //        // setup serverSocket
+    //        int listeningPort = par("listeningPort");
+    //        serverSocket.setOutputGate(gate("socketOut"));
+    //        serverSocket.bind(inet::L3AddressResolver().resolve((this->getParentModule()->getFullPath()).c_str()), listeningPort);
+    //        serverSocket.setCallback(this);
+    //        serverSocket.listen();
+    //    }
+    //    EV <<  "MEC PLATFORM: " << internalGetModulePathForResolve()<< endl;
     MecControlApp::initialize(numstage);
 
     if (numstage == inet::INITSTAGE_LOCAL) {
@@ -95,7 +95,9 @@ void MecPlatformApp::processMecStartMecAppMessage(inet::Ptr<const MecStartMecApp
     EV << "MEC PLATFORM has received the mec start mecapp message" << endl;
     auto appNamec = message->getMecApplication().getAppName();
     string appName(appNamec);
-    connectApp(appName);
+    string containerName = message->getContainerName();
+    connectApp(containerName);
+    createAppModule(appNamec, containerName,message->getMecApplication().getParameters());
     auto answerMessage = createMecControlMessage<MecAppStartedMessage>();
     answerMessage->setServiceName(message->getServiceName());
     answerMessage->setAppName(appNamec);
@@ -103,7 +105,7 @@ void MecPlatformApp::processMecStartMecAppMessage(inet::Ptr<const MecStartMecApp
     sendMecControlMessage(par("orchestratorAddress"), answerMessage);
 }
 void MecPlatformApp::processMecAppMigrationMessage(inet::Ptr<const MecAppMigrationMessage> message){
-//per poter inviare il messaggio alll' altra platmorf mi serve piu del semplice nome uso connoct client socket
+    //per poter inviare il messaggio alll' altra platmorf mi serve piu del semplice nome uso connoct client socket
     EV << "MEC PLATFORM has received the mec migrate message" << endl;
     disconnectApp(message->getAppName());
     EV << "Applicazione disconessa invio messaggio alla platform destinazione" << endl;
@@ -130,6 +132,27 @@ int MecPlatformApp::readElementFromXml(const cXMLElement *fec,string dest , stri
         if (destination == dest ){
             return getParameterIntValue(elem,element.c_str());
         }
+    }
+    return -1;
+}
+
+void MecPlatformApp::processAndAssignParameter(cPar &moduleParameter,cParImpl * parameterValue){
+    switch(parameterValue->getType()){
+    case cParImpl::Type::BOOL:
+        moduleParameter =  parameterValue->boolValue(NULL);
+        break;
+    case cParImpl::Type::DOUBLE:
+        moduleParameter =  parameterValue->doubleValue(NULL);
+        break;
+    case cParImpl::Type::INT:
+        moduleParameter =  parameterValue->intValue(NULL);
+        break;
+    case cParImpl::Type::XML:
+        moduleParameter =  parameterValue->xmlValue(NULL);
+        break;
+    case cParImpl::Type::STRING:
+        moduleParameter =  parameterValue->stringValue(NULL);
+        break;
     }
 }
 
@@ -197,9 +220,43 @@ int MecPlatformApp::readElementFromXml(const cXMLElement *fec,string dest , stri
     vm_routing_table->addRoute(vm_tableEntry);
 
 }
-*/
+ */
+void MecPlatformApp::createAppModule(string appName,string containerName,map<std::string, omnetpp::cParImpl *> parameter){
+    cModuleType *moduleType = cModuleType::get("inet.applications.tcpapp.TcpEchoApp");
+    const char * parentName = (containerName + ".vm").c_str();
+    cModule *module = moduleType->create(appName.c_str(), getModuleByPath(parentName));
+    auto it = parameter.begin();
+    while (it != parameter.end())
+    {
+        // Accessing KEY from element pointed by it.
+        string sParam = it->first;
+        // Accessing VALUE from element pointed by it.
+
+        processAndAssignParameter(module->par(sParam.c_str()), it->second);
+
+        // Increment the Iterator to point to next entry
+        it++;
+    }
+    module->finalizeParameters();
+    //mpls_network2.mecApp[0].vm.at.out[0]--> app[0].socketIn
+    //mpls_network2.mecApp[0].vm.app[0].socketOut--> at.in[0]
+    cModule *at = getModuleByPath((containerName + ".vm.at").c_str());
+    numGate++;
+    at->setGateSize("out", numGate);
+    at->setGateSize("in", numGate);
+    at->gate("out",(numGate-1))->connectTo(module->gate("socketIn"));
+    module->gate("socketOut")->connectTo(at->gate("in",(numGate-1)));
+    module->buildInside();
+    module->scheduleStart(simTime()+1);
+    for(int i = 0;i < 15;i++){
+        module->callInitialize(i);
+    }
+}
+
+
+
 void MecPlatformApp::disconnectApp(string appName){
-     const char * mecApp = appName.c_str();
+    const char * mecApp = appName.c_str();
 
     cModule *appToMigrate = getModuleByPath(mecApp);
     cModule *macHost = this->getParentModule()->getParentModule();
@@ -285,7 +342,7 @@ void MecPlatformApp::connectApp(string appName,bool migration){
 void MecPlatformApp::route_label(string appName,bool migration){
     //solo post migrazione
     //    EV << "Aggiungo la route..." << "router_ext.classifier" << endl;
-   //  EV << "Aggiungo la route..." << "router_"<< to <<".classifier" << endl;
+    //  EV << "Aggiungo la route..." << "router_"<< to <<".classifier" << endl;
     //const char * router_dest = ("router_"+ to + ".classifier").c_str(); // non dovrebbe cambaire, vengono aggiunte in tutti
     //if necessario per cambiare le route solo nel caso della migrazione
     if(migration == true){
@@ -297,7 +354,7 @@ void MecPlatformApp::route_label(string appName,bool migration){
         int id = readElementFromXml(par("fecFile"), appName + ".vm", "id");
         int tunnel_id = readElementFromXml(par("fecFile"), appName + ".vm", "tunnel_id");
         const char * dest = (appName + ".vm").c_str();
-    //    userClassifier->remove_from_table(4);
+        //    userClassifier->remove_from_table(4);
         userClassifier->add_in_table(id,tunnel_id, mecHostLspid, dest);
         EV<<"Aggiunto bind con corretta label switch path verso " << dest << endl;
     }

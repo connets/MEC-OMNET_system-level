@@ -1,5 +1,5 @@
 #include "../systemLevel/MecUser.h"
-
+#include <any>
 #include "inet/networklayer/common/L3AddressResolver.h"
 
 Define_Module(MecUser);
@@ -31,7 +31,7 @@ void MecUser::processSelfMessage(cMessage *msg){
 
         auto application = MecAppDescription();
 
-        const char *appName = "mecApp";
+        const char *appName = "TcpEchoApp";
         auto res = Resources();
         res.setCpu(10);
         res.setRam(20);
@@ -41,10 +41,25 @@ void MecUser::processSelfMessage(cMessage *msg){
         qos.setExpectedDelay(0.1);
         qos.setBandwidth(10.0);
         qos.setProcessingTime(0.2);
-
+        auto parameters = parameterMap();
+        //parameters.anymap.emplace("PARAM",new Any<int>(5));
+        //int value = dynamic_cast<Any<int>&>(*parameters.anymap["PARAM"]).data;
+        //EV << "VALUEEEEEEEEEEEE        " << value << endl;
+        auto localport = new cIntParImpl();
+        localport->setIntValue(1000);
+        parameters.emplace("localPort",localport);
+        auto echodelay = new cDoubleParImpl();
+        echodelay->setDoubleValue(0.0);
+        parameters.emplace("echoDelay",echodelay);
+        auto echofactor = new cDoubleParImpl();
+        echofactor->setDoubleValue(2.0);
+        parameters.emplace("echoFactor",echofactor);
+//        if(parameters.anymap["PAraAM"]->getType()== cParImpl::Type::BOOL)
+//          EV<< "VALOREEEE SALVATOOO    " << parameters.anymap["PAraAM"]->boolValue(NULL) << endl;
         application.setAppName(appName);
         application.setRequiredResources(res);
         application.setQosRequirements(qos);
+        application.setParameters(parameters);
 
         auto message = createMecControlMessage<MecRequestServiceMessage>();
         message->setMecApplicationsArraySize(1);

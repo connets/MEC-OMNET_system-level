@@ -220,6 +220,223 @@ EXECUTE_ON_STARTUP(
     e->insert(MEC_APP_MIGRATION_MESSAGE, "MEC_APP_MIGRATION_MESSAGE");
 )
 
+class parameterMapDescriptor : public omnetpp::cClassDescriptor
+{
+  private:
+    mutable const char **propertynames;
+    enum FieldConstants {
+    };
+  public:
+    parameterMapDescriptor();
+    virtual ~parameterMapDescriptor();
+
+    virtual bool doesSupport(omnetpp::cObject *obj) const override;
+    virtual const char **getPropertyNames() const override;
+    virtual const char *getProperty(const char *propertyname) const override;
+    virtual int getFieldCount() const override;
+    virtual const char *getFieldName(int field) const override;
+    virtual int findField(const char *fieldName) const override;
+    virtual unsigned int getFieldTypeFlags(int field) const override;
+    virtual const char *getFieldTypeString(int field) const override;
+    virtual const char **getFieldPropertyNames(int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
+    virtual int getFieldArraySize(void *object, int field) const override;
+
+    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
+    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+
+    virtual const char *getFieldStructName(int field) const override;
+    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+};
+
+Register_ClassDescriptor(parameterMapDescriptor)
+
+parameterMapDescriptor::parameterMapDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(parameterMap)), "")
+{
+    propertynames = nullptr;
+}
+
+parameterMapDescriptor::~parameterMapDescriptor()
+{
+    delete[] propertynames;
+}
+
+bool parameterMapDescriptor::doesSupport(omnetpp::cObject *obj) const
+{
+    return dynamic_cast<parameterMap *>(obj)!=nullptr;
+}
+
+const char **parameterMapDescriptor::getPropertyNames() const
+{
+    if (!propertynames) {
+        static const char *names[] = { "existingClass",  nullptr };
+        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
+        propertynames = mergeLists(basenames, names);
+    }
+    return propertynames;
+}
+
+const char *parameterMapDescriptor::getProperty(const char *propertyname) const
+{
+    if (!strcmp(propertyname, "existingClass")) return "";
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+}
+
+int parameterMapDescriptor::getFieldCount() const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 0+basedesc->getFieldCount() : 0;
+}
+
+unsigned int parameterMapDescriptor::getFieldTypeFlags(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldTypeFlags(field);
+        field -= basedesc->getFieldCount();
+    }
+    return 0;
+}
+
+const char *parameterMapDescriptor::getFieldName(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldName(field);
+        field -= basedesc->getFieldCount();
+    }
+    return nullptr;
+}
+
+int parameterMapDescriptor::findField(const char *fieldName) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->findField(fieldName) : -1;
+}
+
+const char *parameterMapDescriptor::getFieldTypeString(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldTypeString(field);
+        field -= basedesc->getFieldCount();
+    }
+    return nullptr;
+}
+
+const char **parameterMapDescriptor::getFieldPropertyNames(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldPropertyNames(field);
+        field -= basedesc->getFieldCount();
+    }
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+const char *parameterMapDescriptor::getFieldProperty(int field, const char *propertyname) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldProperty(field, propertyname);
+        field -= basedesc->getFieldCount();
+    }
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+int parameterMapDescriptor::getFieldArraySize(void *object, int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldArraySize(object, field);
+        field -= basedesc->getFieldCount();
+    }
+    parameterMap *pp = (parameterMap *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+const char *parameterMapDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldDynamicTypeString(object,field,i);
+        field -= basedesc->getFieldCount();
+    }
+    parameterMap *pp = (parameterMap *)object; (void)pp;
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+std::string parameterMapDescriptor::getFieldValueAsString(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldValueAsString(object,field,i);
+        field -= basedesc->getFieldCount();
+    }
+    parameterMap *pp = (parameterMap *)object; (void)pp;
+    switch (field) {
+        default: return "";
+    }
+}
+
+bool parameterMapDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->setFieldValueAsString(object,field,i,value);
+        field -= basedesc->getFieldCount();
+    }
+    parameterMap *pp = (parameterMap *)object; (void)pp;
+    switch (field) {
+        default: return false;
+    }
+}
+
+const char *parameterMapDescriptor::getFieldStructName(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldStructName(field);
+        field -= basedesc->getFieldCount();
+    }
+    return nullptr;
+}
+
+void *parameterMapDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldStructValuePointer(object, field, i);
+        field -= basedesc->getFieldCount();
+    }
+    parameterMap *pp = (parameterMap *)object; (void)pp;
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
 Resources::Resources()
 {
 }
@@ -899,6 +1116,7 @@ void MecAppDescription::copy(const MecAppDescription& other)
     this->appName = other.appName;
     this->requiredResources = other.requiredResources;
     this->qosRequirements = other.qosRequirements;
+    this->parameters = other.parameters;
 }
 
 void MecAppDescription::parsimPack(omnetpp::cCommBuffer *b) const
@@ -906,6 +1124,7 @@ void MecAppDescription::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->appName);
     doParsimPacking(b,this->requiredResources);
     doParsimPacking(b,this->qosRequirements);
+    doParsimPacking(b,this->parameters);
 }
 
 void MecAppDescription::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -913,6 +1132,7 @@ void MecAppDescription::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->appName);
     doParsimUnpacking(b,this->requiredResources);
     doParsimUnpacking(b,this->qosRequirements);
+    doParsimUnpacking(b,this->parameters);
 }
 
 const char * MecAppDescription::getAppName() const
@@ -945,6 +1165,16 @@ void MecAppDescription::setQosRequirements(const QoSRequirements& qosRequirement
     this->qosRequirements = qosRequirements;
 }
 
+const parameterMap& MecAppDescription::getParameters() const
+{
+    return this->parameters;
+}
+
+void MecAppDescription::setParameters(const parameterMap& parameters)
+{
+    this->parameters = parameters;
+}
+
 class MecAppDescriptionDescriptor : public omnetpp::cClassDescriptor
 {
   private:
@@ -953,6 +1183,7 @@ class MecAppDescriptionDescriptor : public omnetpp::cClassDescriptor
         FIELD_appName,
         FIELD_requiredResources,
         FIELD_qosRequirements,
+        FIELD_parameters,
     };
   public:
     MecAppDescriptionDescriptor();
@@ -1015,7 +1246,7 @@ const char *MecAppDescriptionDescriptor::getProperty(const char *propertyname) c
 int MecAppDescriptionDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    return basedesc ? 4+basedesc->getFieldCount() : 4;
 }
 
 unsigned int MecAppDescriptionDescriptor::getFieldTypeFlags(int field) const
@@ -1030,8 +1261,9 @@ unsigned int MecAppDescriptionDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_appName
         FD_ISCOMPOUND,    // FIELD_requiredResources
         FD_ISCOMPOUND,    // FIELD_qosRequirements
+        FD_ISCOMPOUND,    // FIELD_parameters
     };
-    return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *MecAppDescriptionDescriptor::getFieldName(int field) const
@@ -1046,8 +1278,9 @@ const char *MecAppDescriptionDescriptor::getFieldName(int field) const
         "appName",
         "requiredResources",
         "qosRequirements",
+        "parameters",
     };
-    return (field >= 0 && field < 3) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 4) ? fieldNames[field] : nullptr;
 }
 
 int MecAppDescriptionDescriptor::findField(const char *fieldName) const
@@ -1057,6 +1290,7 @@ int MecAppDescriptionDescriptor::findField(const char *fieldName) const
     if (fieldName[0] == 'a' && strcmp(fieldName, "appName") == 0) return base+0;
     if (fieldName[0] == 'r' && strcmp(fieldName, "requiredResources") == 0) return base+1;
     if (fieldName[0] == 'q' && strcmp(fieldName, "qosRequirements") == 0) return base+2;
+    if (fieldName[0] == 'p' && strcmp(fieldName, "parameters") == 0) return base+3;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -1072,8 +1306,9 @@ const char *MecAppDescriptionDescriptor::getFieldTypeString(int field) const
         "string",    // FIELD_appName
         "Resources",    // FIELD_requiredResources
         "QoSRequirements",    // FIELD_qosRequirements
+        "parameterMap",    // FIELD_parameters
     };
-    return (field >= 0 && field < 3) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **MecAppDescriptionDescriptor::getFieldPropertyNames(int field) const
@@ -1143,6 +1378,7 @@ std::string MecAppDescriptionDescriptor::getFieldValueAsString(void *object, int
         case FIELD_appName: return oppstring2string(pp->getAppName());
         case FIELD_requiredResources: {std::stringstream out; out << pp->getRequiredResources(); return out.str();}
         case FIELD_qosRequirements: {std::stringstream out; out << pp->getQosRequirements(); return out.str();}
+        case FIELD_parameters: {std::stringstream out; out << pp->getParameters(); return out.str();}
         default: return "";
     }
 }
@@ -1173,6 +1409,7 @@ const char *MecAppDescriptionDescriptor::getFieldStructName(int field) const
     switch (field) {
         case FIELD_requiredResources: return omnetpp::opp_typename(typeid(Resources));
         case FIELD_qosRequirements: return omnetpp::opp_typename(typeid(QoSRequirements));
+        case FIELD_parameters: return omnetpp::opp_typename(typeid(parameterMap));
         default: return nullptr;
     };
 }
@@ -1189,6 +1426,7 @@ void *MecAppDescriptionDescriptor::getFieldStructValuePointer(void *object, int 
     switch (field) {
         case FIELD_requiredResources: return toVoidPtr(&pp->getRequiredResources()); break;
         case FIELD_qosRequirements: return toVoidPtr(&pp->getQosRequirements()); break;
+        case FIELD_parameters: return toVoidPtr(&pp->getParameters()); break;
         default: return nullptr;
     }
 }
@@ -2878,6 +3116,7 @@ void MecStartMecAppMessage::copy(const MecStartMecAppMessage& other)
 {
     this->serviceName = other.serviceName;
     this->mecApplication = other.mecApplication;
+    this->containerName = other.containerName;
 }
 
 void MecStartMecAppMessage::parsimPack(omnetpp::cCommBuffer *b) const
@@ -2885,6 +3124,7 @@ void MecStartMecAppMessage::parsimPack(omnetpp::cCommBuffer *b) const
     ::MecControlMessage::parsimPack(b);
     doParsimPacking(b,this->serviceName);
     doParsimPacking(b,this->mecApplication);
+    doParsimPacking(b,this->containerName);
 }
 
 void MecStartMecAppMessage::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -2892,6 +3132,7 @@ void MecStartMecAppMessage::parsimUnpack(omnetpp::cCommBuffer *b)
     ::MecControlMessage::parsimUnpack(b);
     doParsimUnpacking(b,this->serviceName);
     doParsimUnpacking(b,this->mecApplication);
+    doParsimUnpacking(b,this->containerName);
 }
 
 const char * MecStartMecAppMessage::getServiceName() const
@@ -2916,6 +3157,17 @@ void MecStartMecAppMessage::setMecApplication(const MecAppDescription& mecApplic
     this->mecApplication = mecApplication;
 }
 
+const char * MecStartMecAppMessage::getContainerName() const
+{
+    return this->containerName.c_str();
+}
+
+void MecStartMecAppMessage::setContainerName(const char * containerName)
+{
+    handleChange();
+    this->containerName = containerName;
+}
+
 class MecStartMecAppMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
@@ -2923,6 +3175,7 @@ class MecStartMecAppMessageDescriptor : public omnetpp::cClassDescriptor
     enum FieldConstants {
         FIELD_serviceName,
         FIELD_mecApplication,
+        FIELD_containerName,
     };
   public:
     MecStartMecAppMessageDescriptor();
@@ -2985,7 +3238,7 @@ const char *MecStartMecAppMessageDescriptor::getProperty(const char *propertynam
 int MecStartMecAppMessageDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    return basedesc ? 3+basedesc->getFieldCount() : 3;
 }
 
 unsigned int MecStartMecAppMessageDescriptor::getFieldTypeFlags(int field) const
@@ -2999,8 +3252,9 @@ unsigned int MecStartMecAppMessageDescriptor::getFieldTypeFlags(int field) const
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_serviceName
         FD_ISCOMPOUND,    // FIELD_mecApplication
+        FD_ISEDITABLE,    // FIELD_containerName
     };
-    return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *MecStartMecAppMessageDescriptor::getFieldName(int field) const
@@ -3014,8 +3268,9 @@ const char *MecStartMecAppMessageDescriptor::getFieldName(int field) const
     static const char *fieldNames[] = {
         "serviceName",
         "mecApplication",
+        "containerName",
     };
-    return (field >= 0 && field < 2) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 3) ? fieldNames[field] : nullptr;
 }
 
 int MecStartMecAppMessageDescriptor::findField(const char *fieldName) const
@@ -3024,6 +3279,7 @@ int MecStartMecAppMessageDescriptor::findField(const char *fieldName) const
     int base = basedesc ? basedesc->getFieldCount() : 0;
     if (fieldName[0] == 's' && strcmp(fieldName, "serviceName") == 0) return base+0;
     if (fieldName[0] == 'm' && strcmp(fieldName, "mecApplication") == 0) return base+1;
+    if (fieldName[0] == 'c' && strcmp(fieldName, "containerName") == 0) return base+2;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -3038,8 +3294,9 @@ const char *MecStartMecAppMessageDescriptor::getFieldTypeString(int field) const
     static const char *fieldTypeStrings[] = {
         "string",    // FIELD_serviceName
         "MecAppDescription",    // FIELD_mecApplication
+        "string",    // FIELD_containerName
     };
-    return (field >= 0 && field < 2) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 3) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **MecStartMecAppMessageDescriptor::getFieldPropertyNames(int field) const
@@ -3108,6 +3365,7 @@ std::string MecStartMecAppMessageDescriptor::getFieldValueAsString(void *object,
     switch (field) {
         case FIELD_serviceName: return oppstring2string(pp->getServiceName());
         case FIELD_mecApplication: {std::stringstream out; out << pp->getMecApplication(); return out.str();}
+        case FIELD_containerName: return oppstring2string(pp->getContainerName());
         default: return "";
     }
 }
@@ -3123,6 +3381,7 @@ bool MecStartMecAppMessageDescriptor::setFieldValueAsString(void *object, int fi
     MecStartMecAppMessage *pp = (MecStartMecAppMessage *)object; (void)pp;
     switch (field) {
         case FIELD_serviceName: pp->setServiceName((value)); return true;
+        case FIELD_containerName: pp->setContainerName((value)); return true;
         default: return false;
     }
 }

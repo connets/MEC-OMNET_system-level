@@ -18,7 +18,7 @@ protected:
     virtual void processMecRequestServiceMessage(inet::Ptr<const MecRequestServiceMessage> message) override;
     virtual void processMecAppStartedMessage(inet::Ptr<const MecAppStartedMessage> message) override;
     virtual void processSelfMessage(cMessage *msg) override;
-    virtual void handleApplication(MecAppDescription application, const char *serviceName);
+    virtual void handleApplication(MecAppDescription application, const char *serviceName,const char *containerName);
 
 public:
 

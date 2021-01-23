@@ -12,6 +12,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
+//TODO due diversi conteiner in base al tipo di applicazione da far girare in base alla 
+//necessita di simulare disponibilita di risorse sul mec host
 package mec_simple.hostLevel;
 import inet.linklayer.acking.AckingMac;
 import inet.node.inet.StandardHost;
