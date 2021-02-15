@@ -8,8 +8,8 @@ class MecOrchestratorApp: public MecControlApp{
 private:
 
     map<const char *, Host*> MECHosts;
-    int maxApp;
-    int actualApp;
+    int maxAppContainers;
+    int actualContainers;
     cMessage* migrate;
 protected:
     virtual void initialize(int numstage) override;

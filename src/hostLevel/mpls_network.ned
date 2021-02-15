@@ -25,7 +25,7 @@ network mpls_network
     parameters:
         int maxMecApp = default(1);
     submodules:
-        mecApp[maxMecApp]: MecApp {
+        mecApp[maxMecApp]: MecAppContainer {
             @display("p=458,167;is=vl");
         }
         configurator: ConfiguratorMecMpls {

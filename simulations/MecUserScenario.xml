@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<scenario>
+	<at t="30">
+		<service-request name="servizio" module="user.app[0]" >
+			<components>
+				<component name="Server">
+					<module name="inet.applications.tcpapp.TcpEchoApp"/>
+					<parameters>
+						<param name="localPort" type="int" value="1000"/>
+						<param name="echoDelay" type="double" value="0.0"/>
+						<param name="echoFactor" type="double" value="2.0"/>
+					</parameters>
+					<resources>
+						<resource name="cpu" value="10"/>
+						<resource name="ram" value="20"/>
+						<resource name="disk" value="30"/>
+						<resource name="network" value="40"/>
+					</resources>
+					<requirements>
+						<required name="expectedDelay" value="0.1"/>
+						<required name="bandwidth" value="10.0"/>
+						<required name="processingTime" value="0.2"/>
+					</requirements>
+				</component>
+			</components>
+		</service-request>
+	</at>
+</scenario>

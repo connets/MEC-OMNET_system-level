@@ -4036,30 +4036,30 @@ MecAppTransfertMessage& MecAppTransfertMessage::operator=(const MecAppTransfertM
 
 void MecAppTransfertMessage::copy(const MecAppTransfertMessage& other)
 {
-    this->appName = other.appName;
+    this->containerAppName = other.containerAppName;
 }
 
 void MecAppTransfertMessage::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::MecControlMessage::parsimPack(b);
-    doParsimPacking(b,this->appName);
+    doParsimPacking(b,this->containerAppName);
 }
 
 void MecAppTransfertMessage::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::MecControlMessage::parsimUnpack(b);
-    doParsimUnpacking(b,this->appName);
+    doParsimUnpacking(b,this->containerAppName);
 }
 
-const char * MecAppTransfertMessage::getAppName() const
+const char * MecAppTransfertMessage::getContainerAppName() const
 {
-    return this->appName.c_str();
+    return this->containerAppName.c_str();
 }
 
-void MecAppTransfertMessage::setAppName(const char * appName)
+void MecAppTransfertMessage::setContainerAppName(const char * containerAppName)
 {
     handleChange();
-    this->appName = appName;
+    this->containerAppName = containerAppName;
 }
 
 class MecAppTransfertMessageDescriptor : public omnetpp::cClassDescriptor
@@ -4067,7 +4067,7 @@ class MecAppTransfertMessageDescriptor : public omnetpp::cClassDescriptor
   private:
     mutable const char **propertynames;
     enum FieldConstants {
-        FIELD_appName,
+        FIELD_containerAppName,
     };
   public:
     MecAppTransfertMessageDescriptor();
@@ -4142,7 +4142,7 @@ unsigned int MecAppTransfertMessageDescriptor::getFieldTypeFlags(int field) cons
         field -= basedesc->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_appName
+        FD_ISEDITABLE,    // FIELD_containerAppName
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
@@ -4156,7 +4156,7 @@ const char *MecAppTransfertMessageDescriptor::getFieldName(int field) const
         field -= basedesc->getFieldCount();
     }
     static const char *fieldNames[] = {
-        "appName",
+        "containerAppName",
     };
     return (field >= 0 && field < 1) ? fieldNames[field] : nullptr;
 }
@@ -4165,7 +4165,7 @@ int MecAppTransfertMessageDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "appName") == 0) return base+0;
+    if (fieldName[0] == 'c' && strcmp(fieldName, "containerAppName") == 0) return base+0;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -4178,7 +4178,7 @@ const char *MecAppTransfertMessageDescriptor::getFieldTypeString(int field) cons
         field -= basedesc->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
-        "string",    // FIELD_appName
+        "string",    // FIELD_containerAppName
     };
     return (field >= 0 && field < 1) ? fieldTypeStrings[field] : nullptr;
 }
@@ -4247,7 +4247,7 @@ std::string MecAppTransfertMessageDescriptor::getFieldValueAsString(void *object
     }
     MecAppTransfertMessage *pp = (MecAppTransfertMessage *)object; (void)pp;
     switch (field) {
-        case FIELD_appName: return oppstring2string(pp->getAppName());
+        case FIELD_containerAppName: return oppstring2string(pp->getContainerAppName());
         default: return "";
     }
 }
@@ -4262,7 +4262,7 @@ bool MecAppTransfertMessageDescriptor::setFieldValueAsString(void *object, int f
     }
     MecAppTransfertMessage *pp = (MecAppTransfertMessage *)object; (void)pp;
     switch (field) {
-        case FIELD_appName: pp->setAppName((value)); return true;
+        case FIELD_containerAppName: pp->setContainerAppName((value)); return true;
         default: return false;
     }
 }
@@ -4322,33 +4322,33 @@ MecAppMigrationMessage& MecAppMigrationMessage::operator=(const MecAppMigrationM
 
 void MecAppMigrationMessage::copy(const MecAppMigrationMessage& other)
 {
-    this->appName = other.appName;
+    this->containerAppName = other.containerAppName;
     this->dest = other.dest;
 }
 
 void MecAppMigrationMessage::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::MecControlMessage::parsimPack(b);
-    doParsimPacking(b,this->appName);
+    doParsimPacking(b,this->containerAppName);
     doParsimPacking(b,this->dest);
 }
 
 void MecAppMigrationMessage::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::MecControlMessage::parsimUnpack(b);
-    doParsimUnpacking(b,this->appName);
+    doParsimUnpacking(b,this->containerAppName);
     doParsimUnpacking(b,this->dest);
 }
 
-const char * MecAppMigrationMessage::getAppName() const
+const char * MecAppMigrationMessage::getContainerAppName() const
 {
-    return this->appName.c_str();
+    return this->containerAppName.c_str();
 }
 
-void MecAppMigrationMessage::setAppName(const char * appName)
+void MecAppMigrationMessage::setContainerAppName(const char * containerAppName)
 {
     handleChange();
-    this->appName = appName;
+    this->containerAppName = containerAppName;
 }
 
 const char * MecAppMigrationMessage::getDest() const
@@ -4367,7 +4367,7 @@ class MecAppMigrationMessageDescriptor : public omnetpp::cClassDescriptor
   private:
     mutable const char **propertynames;
     enum FieldConstants {
-        FIELD_appName,
+        FIELD_containerAppName,
         FIELD_dest,
     };
   public:
@@ -4443,7 +4443,7 @@ unsigned int MecAppMigrationMessageDescriptor::getFieldTypeFlags(int field) cons
         field -= basedesc->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_appName
+        FD_ISEDITABLE,    // FIELD_containerAppName
         FD_ISEDITABLE,    // FIELD_dest
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
@@ -4458,7 +4458,7 @@ const char *MecAppMigrationMessageDescriptor::getFieldName(int field) const
         field -= basedesc->getFieldCount();
     }
     static const char *fieldNames[] = {
-        "appName",
+        "containerAppName",
         "dest",
     };
     return (field >= 0 && field < 2) ? fieldNames[field] : nullptr;
@@ -4468,7 +4468,7 @@ int MecAppMigrationMessageDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "appName") == 0) return base+0;
+    if (fieldName[0] == 'c' && strcmp(fieldName, "containerAppName") == 0) return base+0;
     if (fieldName[0] == 'd' && strcmp(fieldName, "dest") == 0) return base+1;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
@@ -4482,7 +4482,7 @@ const char *MecAppMigrationMessageDescriptor::getFieldTypeString(int field) cons
         field -= basedesc->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
-        "string",    // FIELD_appName
+        "string",    // FIELD_containerAppName
         "string",    // FIELD_dest
     };
     return (field >= 0 && field < 2) ? fieldTypeStrings[field] : nullptr;
@@ -4552,7 +4552,7 @@ std::string MecAppMigrationMessageDescriptor::getFieldValueAsString(void *object
     }
     MecAppMigrationMessage *pp = (MecAppMigrationMessage *)object; (void)pp;
     switch (field) {
-        case FIELD_appName: return oppstring2string(pp->getAppName());
+        case FIELD_containerAppName: return oppstring2string(pp->getContainerAppName());
         case FIELD_dest: return oppstring2string(pp->getDest());
         default: return "";
     }
@@ -4568,7 +4568,7 @@ bool MecAppMigrationMessageDescriptor::setFieldValueAsString(void *object, int f
     }
     MecAppMigrationMessage *pp = (MecAppMigrationMessage *)object; (void)pp;
     switch (field) {
-        case FIELD_appName: pp->setAppName((value)); return true;
+        case FIELD_containerAppName: pp->setContainerAppName((value)); return true;
         case FIELD_dest: pp->setDest((value)); return true;
         default: return false;
     }

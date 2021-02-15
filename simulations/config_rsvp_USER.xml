@@ -48,7 +48,7 @@
 	</session>
 	
 	<session>
-		<endpoint>mecApp[0].vm</endpoint>
+		<endpoint>mecContainerApp[0].vm</endpoint>
 		<tunnel_id>4</tunnel_id>
 		<paths>
 			<path>
@@ -70,7 +70,7 @@
 		</paths>
 	</session>
 	<session>
-		<endpoint>mecApp[1].vm</endpoint>
+		<endpoint>mecContainerApp[1].vm</endpoint>
 		<tunnel_id>5</tunnel_id>
 		<paths>
 			<path>

@@ -24,7 +24,7 @@ import inet.node.ethernet.Eth10G;
 import inet.node.ethernet.EtherSwitch;
 import inet.mobility.static.StationaryMobility;
 
-module MecApp
+module MecAppContainer
 {
     @display("bgb=337,232");
 

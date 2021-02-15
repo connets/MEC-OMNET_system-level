@@ -610,14 +610,14 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecServiceStartedMessage&
  * {
  *     chunkLength = inet::B(5*1024);
  *     ctlMsgType = MEC_APP_TRANSFERT_MESSAGE;
- *     string appName;
+ *     string containerAppName;
  * }
  * </pre>
  */
 class MecAppTransfertMessage : public ::MecControlMessage
 {
   protected:
-    omnetpp::opp_string appName;
+    omnetpp::opp_string containerAppName;
 
   private:
     void copy(const MecAppTransfertMessage& other);
@@ -636,8 +636,8 @@ class MecAppTransfertMessage : public ::MecControlMessage
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
     // field getter/setter methods
-    virtual const char * getAppName() const;
-    virtual void setAppName(const char * appName);
+    virtual const char * getContainerAppName() const;
+    virtual void setContainerAppName(const char * containerAppName);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const MecAppTransfertMessage& obj) {obj.parsimPack(b);}
@@ -651,7 +651,7 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecAppTransfertMessage& o
  * {
  *     chunkLength = inet::B(200);
  *     ctlMsgType = MEC_APP_MIGRATION_MESSAGE;
- *     string appName;
+ *     string containerAppName;
  *     string dest;
  * 
  * }
@@ -660,7 +660,7 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, MecAppTransfertMessage& o
 class MecAppMigrationMessage : public ::MecControlMessage
 {
   protected:
-    omnetpp::opp_string appName;
+    omnetpp::opp_string containerAppName;
     omnetpp::opp_string dest;
 
   private:
@@ -680,8 +680,8 @@ class MecAppMigrationMessage : public ::MecControlMessage
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
     // field getter/setter methods
-    virtual const char * getAppName() const;
-    virtual void setAppName(const char * appName);
+    virtual const char * getContainerAppName() const;
+    virtual void setContainerAppName(const char * containerAppName);
     virtual const char * getDest() const;
     virtual void setDest(const char * dest);
 };

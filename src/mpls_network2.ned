@@ -21,13 +21,18 @@ import inet.node.inet.StandardHost;
 import inet.node.inet.Router;
 import inet.visualizer.integrated.IntegratedCanvasVisualizer;
 import inet.node.mpls.RsvpMplsRouter;
+import inet.common.scenario.*;
+
 
 network mpls_network2
 {
     parameters:
         int maxMecApp = default(1);
     submodules:
-        mecApp[maxMecApp]: MecApp {
+        scenarioManager: ScenarioManager {
+            @display("p=204,41");
+        }
+        mecContainerApp[maxMecApp]: MecAppContainer {
             @display("p=458,160");
         }
         configurator: ConfiguratorMecMpls {

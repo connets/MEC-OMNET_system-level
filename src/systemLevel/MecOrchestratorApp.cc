@@ -8,8 +8,8 @@ void MecOrchestratorApp::initialize (int numstage) {
 
     MecControlApp::initialize(numstage);
     if (numstage == inet::INITSTAGE_LAST) {
-        maxApp = par("maxAppNumber");
-        actualApp = 0;
+        maxAppContainers = par("maxAppNumber");
+        actualContainers = 0;
         migrate = new cMessage("Migrate App");
         scheduleAt(simTime() +par("startTime"), migrate);
     }
@@ -51,12 +51,13 @@ void MecOrchestratorApp::processMecRequestServiceMessage(inet::Ptr<const MecRequ
     auto size = message->getMecApplicationsArraySize();
 
     for(int i=0;i<size;i++){
-        actualApp++;
+        actualContainers++;
         auto app = message->getMecApplications(i);
         auto appName = app.getAppName();
-        auto containerName = ("mecApp[" + to_string(actualApp-1)+"]").c_str(); //containername AppName diventa nome dell applicazione
         auto res = app.getRequiredResources();
         auto qos = app.getQosRequirements();
+        auto sContainerName = ("mecContainerApp[" + to_string(actualContainers-1)+"]");
+        auto containerAppName = sContainerName.c_str();
 
         EV << "Application Name: " << appName << endl;
         EV << "Required Resources: "
@@ -70,7 +71,7 @@ void MecOrchestratorApp::processMecRequestServiceMessage(inet::Ptr<const MecRequ
            << "     Bandwidth: " << qos.getBandwidth()
            << "     Processing Time: " << qos.getProcessingTime()
            << endl;
-        handleApplication(app,service,containerName);
+        handleApplication(app,service,containerAppName);
     }
 }
 
@@ -108,7 +109,7 @@ void MecOrchestratorApp::processSelfMessage(cMessage *msg){
     if(msg == migrate){
             EV << "MEC Orchestrator migrate app" << endl;
             auto message = createMecControlMessage<MecAppMigrationMessage>();
-            message->setAppName("mecApp[0]");
+            message->setContainerAppName("mecContainerApp[0]");
             message->setDest("mecHost2");
             sendMecControlMessage("mecHost1", message);
 

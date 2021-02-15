@@ -150,13 +150,13 @@ class MecServiceStartedMessage extends MecControlMessage{
 class MecAppTransfertMessage extends MecControlMessage{
         chunkLength = inet::B(5*1024);
         ctlMsgType = MEC_APP_TRANSFERT_MESSAGE;
-        string appName;
+        string containerAppName;
 }
 //orchestrator->platform
 class MecAppMigrationMessage extends MecControlMessage{
         chunkLength = inet::B(200);
         ctlMsgType = MEC_APP_MIGRATION_MESSAGE;
-        string appName;
+        string containerAppName;
         string dest;
         
 }

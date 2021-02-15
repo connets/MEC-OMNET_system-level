@@ -20,13 +20,13 @@
 	</fecentry>
 	<fecentry>
 		<id>4</id>
-		<destination>mecApp[0].vm</destination>
+		<destination>mecContainerApp[0].vm</destination>
 		<tunnel_id>4</tunnel_id>
 		<lspid>401</lspid>
 	</fecentry>
 	<fecentry>
 		<id>5</id>
-		<destination>mecApp[1].vm</destination>
+		<destination>mecContainerApp[1].vm</destination>
 		<tunnel_id>5</tunnel_id>
 		<lspid>401</lspid>
 	</fecentry>

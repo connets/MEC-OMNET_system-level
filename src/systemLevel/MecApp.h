@@ -12,11 +12,13 @@
 #include "inet/common/socket/SocketMap.h"
 #include "inet/transportlayer/contract/tcp/TcpSocket.h"
 
+#include "inet/common/scenario/IScriptable.h"
+
 
 using namespace omnetpp;
 using namespace std;
 
-class MecApp : public cSimpleModule, public inet::TcpSocket::ReceiveQueueBasedCallback{
+class MecApp : public cSimpleModule, public inet::TcpSocket::ReceiveQueueBasedCallback, public inet::IScriptable{
 
 private:
 
@@ -39,6 +41,10 @@ protected:
 
     virtual void handleMessage(cMessage *msg) override;
 
+
+
+
+
     virtual void sendMecControlMessage(inet::Ptr<const MecControlMessage> message);
 
     template <typename T> inet::Ptr<T> createMecControlMessage(){
@@ -56,6 +62,7 @@ protected:
     virtual void processSelfMessage(cMessage *msg){
         throw invalid_argument( "MecApp can't process a self message" );
     }
+
 /*
     virtual void process_orch_msg (inet::Ptr<const MecUpdateMessage> message, inet::TcpSocket *socket){
         throw invalid_argument( "MecControlApp can't process Mec Host Update Messages" );
@@ -63,4 +70,5 @@ protected:
 */
 
 public:
+    virtual void processCommand(const cXMLElement& node) override{};
 };

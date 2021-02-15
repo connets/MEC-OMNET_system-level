@@ -2,12 +2,14 @@
 
 using namespace omnetpp;
 using namespace std;
+using namespace inet;
 
 class MecUser: public MecApp{
 
 private:
 
     cMessage *requestService;
+    vector<inet::Ptr<MecRequestServiceMessage>> requestServiceQueue;
 
 protected:
 
@@ -15,6 +17,7 @@ protected:
     virtual void processSelfMessage(cMessage *msg) override;
     virtual void processMecServiceStartedMessage (inet::Ptr<const MecServiceStartedMessage> message) override;
 
-public:
 
+public:
+    virtual void processCommand(const cXMLElement& node) override;
 };
